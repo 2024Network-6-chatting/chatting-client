@@ -2,27 +2,34 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const GeminiAIExample = () => {
-  const [result, setResult] = useState("");
+  const [ResponseText, setResponseText] = useState("");
   const [prompt, setPrompt] = useState("");
-  const apiKey = process.env.REACT_APP_GEMINI_API
-
+  
   const handleGenerate = async () => {
     try {
-      const response = await axios.post(
-        "https://api.generativeai.google/v1/models/gemini-1.5-flash:generateContent",
-        {
-          prompt: { text: prompt },
-        },
-        {
-          headers: {
-            Authorization: apiKey, //api 키
-            "Content-Type": "application/json",
+      const apiKey = process.env.REACT_APP_GEMINI_API
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+      const data = {
+        contents: [
+          {
+            parts: [{ text: prompt }], // 사용자가 입력한 프롬프트를 포함
           },
-        }
-      );
-      setResult(response.data.response.text);
+        ],
+      };
+
+      const headers = {
+        "Content-Type": "application/json",
+      };
+
+      const result = await axios.post(url, data, { headers });
+
+      // 응답에서 text만 추출
+      const text = result.data?.candidates?.[0]?.content?.parts?.[0]?.text || "No text found";
+      setResponseText(text);
     } catch (error) {
       console.error("API 호출 중 에러 발생:", error);
+      setResponseText(`에러 발생: ${error.message}`);
     }
   };
 
@@ -37,7 +44,7 @@ const GeminiAIExample = () => {
       <button onClick={handleGenerate}>Generate</button>
       <div>
         <h2>결과</h2>
-        <p>{result}</p>
+        <p>{ResponseText}</p>
       </div>
     </div>
   );
