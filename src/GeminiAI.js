@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 
-const GeminiAIExample = () => {
-  const [ResponseText, setResponseText] = useState("");
-  const [userInput, setUserInput] = useState("");
-  
-  // Gemini AI 활용 함수
+const GeminiAI = ({ userInput, onTranslate }) => {
+
+  // Gemini AI 핸들링 
   const handleGenerate = async () => {
+
     try {
       const apiKey = process.env.REACT_APP_GEMINI_API
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
@@ -30,28 +29,13 @@ const GeminiAIExample = () => {
 
       // 응답에서 text만 추출
       const text = result.data?.candidates?.[0]?.content?.parts?.[0]?.text || "No text found";
-      setResponseText(text);
+      onTranslate(text);
     } catch (error) {
       console.error("API 호출 중 에러 발생:", error);
-      setResponseText(`에러 발생: ${error.message}`);
-    }
+    } 
   };
 
-  return (
-    <div>
-      <h1>Gemini AI Example</h1>
-      <textarea
-        value={userInput}
-        onChange={(e) => setUserInput(e.target.value)}
-        placeholder="입력하세요"
-      />
-      <button onClick={handleGenerate}>Generate</button>
-      <div>
-        <h2>결과</h2>
-        <p>{ResponseText}</p>
-      </div>
-    </div>
-  );
+  return <div></div>;
 };
 
-export default GeminiAIExample;
+export default GeminiAI;
