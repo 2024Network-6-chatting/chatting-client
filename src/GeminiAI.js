@@ -3,17 +3,21 @@ import axios from "axios";
 
 const GeminiAIExample = () => {
   const [ResponseText, setResponseText] = useState("");
-  const [prompt, setPrompt] = useState("");
+  const [userInput, setUserInput] = useState("");
   
+  // Gemini AI 활용 함수
   const handleGenerate = async () => {
     try {
       const apiKey = process.env.REACT_APP_GEMINI_API
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
+      //프롬프트 설정
+      const prompt = `You are a translator in chatting system between employees in airport. Don't distrupt the original message's meaning. Translate the following text into English: "${userInput}"`;
+
       const data = {
         contents: [
           {
-            parts: [{ text: prompt }], // 사용자가 입력한 프롬프트를 포함
+            parts: [{ text: prompt }], // 번역 프롬프트를 포함
           },
         ],
       };
@@ -37,9 +41,9 @@ const GeminiAIExample = () => {
     <div>
       <h1>Gemini AI Example</h1>
       <textarea
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        placeholder="프롬프트 입력하세요"
+        value={userInput}
+        onChange={(e) => setUserInput(e.target.value)}
+        placeholder="입력하세요"
       />
       <button onClick={handleGenerate}>Generate</button>
       <div>
