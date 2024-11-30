@@ -4,9 +4,9 @@ import SockJS from "sockjs-client";
 import axios from "axios";
 import GeminiAI from "./GeminiAI";
 import "./App.css";
-import axios from "axios";
 import React from "react";
 import ChatBubble from "./ChatBubble";     // ChatBubble 가져오기
+import MobileView from "./MobileView";     // 
 
 //
 //
