@@ -39,6 +39,7 @@ function App() {
       },
       { id: 6, text: "더 궁금하신 사항이 있으실까요?", isSender: false },
       { id: 7, text: "This is the test English to Korean", isSender: false },
+      { id: 8, text: "Bonjour. Il s'agit d'un test de français.", isSender: false },
     ]);
   }, []);
   const [inputMessage, setInputMessage] = useState(""); // 입력 메시지,
