@@ -1,18 +1,29 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { traslateGeminiAI }from "./GeminiAI";
 
 function ChatBubble({ text, isSender }) {
   const [showTranslation, setShowTranslation] = useState(false);
   const [translatedText, setTranslatedText] = useState("");
+  const [loading, setLoading] = useState(false); // 로딩 상태
 
   // 번역 버튼 클릭 핸들러
-  const handleTranslateClick = () => {
-    if (!showTranslation) {
-      // 번역 API 호출 대신 임시 텍스트 추가
-      const mockTranslatedText = "This is a translated text."; // 예시 번역 텍스트
-      setTranslatedText(mockTranslatedText);
+  const handleTranslateClick = async () => {
+    if (!showTranslation && !translatedText) {
+      setLoading(true); // 로딩 시작
+      try {
+        const translation = await traslateGeminiAI(text); //gemini 사용
+        setTranslatedText(translation);
+        setShowTranslation(true);
+      } catch (error) {
+        console.error("번역 중 에러:", error);
+        setTranslatedText("번역 실패"); // 에러 시 메시지
+      } finally {
+        setLoading(false); // 로딩 종료
+      }
+    } else {
+      setShowTranslation(!showTranslation); // 번역 숨기기/보이기
     }
-    setShowTranslation(!showTranslation);
   };
 
   return (
