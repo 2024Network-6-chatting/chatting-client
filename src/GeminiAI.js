@@ -7,7 +7,10 @@ export const traslateGeminiAI = async (userInput) => {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
     //프롬프트 설정
-  const prompt = `You are a translator in chatting system between employees in airport. Don't distrupt the original message's meaning. Translate the following text into English: "${userInput}"`;
+  const prompt = `You are a translator in chatting system between employees in airport. 
+                Don't distrupt the original message's meaning. 
+                If the text is Korean, translate it into English.
+                If the text is in English, translate it into Korean: "${userInput}"`;
 
   const data = {
     contents: [
