@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { traslateGeminiAI }from "./GeminiAI";
+import { traslateGeminiAI } from "./GeminiAI";
 
 function ChatBubble({ text, isSender }) {
   const [showTranslation, setShowTranslation] = useState(false);
@@ -12,7 +11,7 @@ function ChatBubble({ text, isSender }) {
     if (!showTranslation && !translatedText) {
       setLoading(true); // 로딩 시작
       try {
-        const translation = await traslateGeminiAI(text); //gemini 사용
+        const translation = await traslateGeminiAI(text); // 번역 요청
         setTranslatedText(translation);
         setShowTranslation(true);
       } catch (error) {
@@ -47,6 +46,7 @@ function ChatBubble({ text, isSender }) {
           boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
           whiteSpace: "pre-wrap",
           wordWrap: "break-word",
+          overflowWrap: "break-word",
           fontSize: "14px",
           lineHeight: "1.5",
         }}
@@ -64,7 +64,9 @@ function ChatBubble({ text, isSender }) {
               backgroundColor: "#f1f1f1",
               padding: "8px",
               borderRadius: "8px",
+              overflowWrap: "break-word",
               wordWrap: "break-word",
+              whiteSpace: "pre-wrap",
             }}
           >
             {translatedText}
@@ -78,14 +80,19 @@ function ChatBubble({ text, isSender }) {
             style={{
               marginTop: "10px",
               background: "none",
-              color: "#007bff",
+              color: loading ? "#f369b4" : "#007bff", // 번역 중 색상과 번역 보기 색상 구분
               border: "none",
               fontSize: "12px",
-              cursor: "pointer",
+              cursor: loading ? "not-allowed" : "pointer", // 번역 중 클릭 방지
               padding: 0,
             }}
+            disabled={loading} // 로딩 중 버튼 비활성화
           >
-            {showTranslation ? "번역 숨기기" : "번역 보기"}
+            {loading
+              ? "번역 중..." // 로딩 상태
+              : showTranslation
+              ? "번역 숨기기"
+              : "번역 보기"}
           </button>
         )}
       </div>
