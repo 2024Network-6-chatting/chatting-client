@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { traslateGeminiAI } from "./GeminiAI";
 
-function ChatBubble({ text, isSender }) {
+function ChatBubble({ text, isSender, isEmergency }) {
   const [showTranslation, setShowTranslation] = useState(false);
   const [translatedText, setTranslatedText] = useState("");
   const [loading, setLoading] = useState(false); // 로딩 상태
@@ -38,8 +38,12 @@ function ChatBubble({ text, isSender }) {
         style={{
           maxWidth: "70%",
           padding: "10px 15px",
-          backgroundColor: isSender ? "#dcf8c6" : "#ffffff",
-          color: isSender ? "#000000" : "#333333",
+          backgroundColor: isEmergency
+            ? "#ff4d4f"   // 긴급 메시지: 빨간색
+            : isSender
+            ? "#dcf8c6"   // 보낸 사람: 연두색
+            : "#ffffff",  // 받은 사람: 흰색
+          color: isEmergency ? "#ffffff" : isSender ? "#000000" : "#333333", // 긴급 메시지는 흰색 텍스트
           borderRadius: "12px",
           borderBottomRightRadius: isSender ? "0" : "12px",
           borderBottomLeftRadius: isSender ? "12px" : "0",
