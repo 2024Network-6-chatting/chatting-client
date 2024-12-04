@@ -57,7 +57,11 @@ function App() {
   useEffect(() => {
     const stompClient = new stomp.Client({
       webSocketFactory: () => {
-        return new SockJS("http://3.35.171.53:8080/chat");
+        const server =
+          window.location.hostname === "localhost"
+            ? "http://3.35.171.53:8080/chat"
+            : "api";
+        return new SockJS(server);
       },
       debug: (str) => console.log(str),
       onConnect: () => {
@@ -106,7 +110,12 @@ function App() {
       <div style={{ flex: 1, overflowY: "auto", padding: "20px" }}>
         {/* 메시지 목록 표시 */}
         {messages.map((msg) => (
-          <ChatBubble key={msg.id} text={msg.content} isSender={msg.isSender} isEmergency={msg.isEmergency}/>
+          <ChatBubble
+            key={msg.id}
+            text={msg.content}
+            isSender={msg.isSender}
+            isEmergency={msg.isEmergency}
+          />
         ))}
         <div ref={messageEndRef} /> {/* 스크롤 하단 */}
       </div>
