@@ -56,8 +56,9 @@ function App() {
   useEffect(() => {
     const stompClient = new stomp.Client({
       webSocketFactory: () => {
-        return new SockJS("http://localhost:8080/chat");
+        return new SockJS("http://3.35.171.53:8080/chat");
       },
+      // brokerURL: "http://3.35.171.53:8080/chat",
       debug: (str) => console.log(str),
       onConnect: () => {
         console.log("connected");
