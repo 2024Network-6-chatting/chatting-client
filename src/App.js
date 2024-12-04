@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from "react";
 import * as stomp from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import axios from "axios";
-import GeminiAI from "./GeminiAI";
 import "./App.css";
 import React from "react";
 import ChatBubble from "./ChatBubble"; // ChatBubble 가져오기
@@ -13,6 +12,7 @@ import MobileView from "./MobileView"; // MobileView 가져오기
 //
 
 function App() {
+
   const [messages, setMessages] = useState([]); // 받은 메시지 목록
   const [inputMessage, setInputMessage] = useState(""); // 입력 메시지
   const [client, setClient] = useState(); // stomp client
@@ -45,6 +45,8 @@ function App() {
         isSender: false,
       },
       { id: 6, text: "더 궁금하신 사항이 있으실까요?", isSender: false },
+      { id: 7, text: "This is the test English to Korean", isSender: false },
+      { id: 8, text: "Bonjour. Il s'agit d'un test de français.", isSender: false },
     ]);
   }, []);
 
@@ -88,22 +90,6 @@ function App() {
     };
   }, []);
   */
-
-  // 번역된 메시지 상태 업데이트
-  const handleTranslation = (text, index) => {
-    setTranslateText((prev) => ({
-      ...prev,
-      [index]: { translated: text, isTranslated: true },
-    }));
-  };
-
-  // 원문으로 돌아가기
-  const handleOriginalMessage = (index) => {
-    setTranslateText((prev) => ({
-      ...prev,
-      [index]: { ...prev[index], isTranslated: false },
-    }));
-  };
 
   return (
     <div
