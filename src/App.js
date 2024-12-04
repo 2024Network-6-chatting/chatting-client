@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import * as stomp from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import axios from "axios";
@@ -13,7 +13,14 @@ import MobileView from "./MobileView"; // MobileView 가져오기
 
 function App() {
 
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([]); // 받은 메시지 목록
+  const [inputMessage, setInputMessage] = useState(""); // 입력 메시지
+  const [client, setClient] = useState(); // stomp client
+  const [TranslateText, setTranslateText] = useState(""); //번역메시지
+
+  const messageEndRef = useRef(null); // 스크롤 하단 이동을 위한 ref
+
+  // 더미 데이터
   useEffect(() => {
     setMessages([
       {
@@ -38,25 +45,17 @@ function App() {
         isSender: false,
       },
       { id: 6, text: "더 궁금하신 사항이 있으실까요?", isSender: false },
+      { id: 7, text: "This is the test English to Korean", isSender: false },
+      { id: 8, text: "Bonjour. Il s'agit d'un test de français.", isSender: false },
     ]);
   }, []);
-  const [inputMessage, setInputMessage] = useState(""); // 입력 메시지,
-  const [client, setClient] = useState(); // stomp client
-  const [TranslateText, setTranslateText] = useState(""); //번역메시지
 
-  // // 메시지 전송 핸들러
-  // const send = () => {
-  //   if (client && inputMessage.trim() !== "") {
-  //     const messageObj = {
-  //       content: inputMessage.trim(),
-  //     };
-  //     client.publish({
-  //       destination: "/pub/chat",
-  //       body: JSON.stringify(messageObj),
-  //     });
-  //     setInputMessage("");
-  //   }
-  // };
+  // 메시지가 변경될 때 스크롤 하단으로 이동
+  useEffect(() => {
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   // 메시지 전송 핸들러
   const sendMessage = (message) => {
@@ -103,11 +102,12 @@ function App() {
         height: "100vh",
       }}
     >
-      <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "20px" }}>
         {/* 메시지 목록 표시 */}
         {messages.map((msg) => (
           <ChatBubble key={msg.id} text={msg.text} isSender={msg.isSender} />
         ))}
+        <div ref={messageEndRef} /> {/* 스크롤 하단 */}
       </div>
       {/* 모바일 뷰 하단바 */}
       <MobileView onSendMessage={sendMessage} />
