@@ -57,11 +57,7 @@ function App() {
   useEffect(() => {
     const stompClient = new stomp.Client({
       webSocketFactory: () => {
-        const server =
-          window.location.hostname === "localhost"
-            ? "http://3.35.171.53:8080/chat"
-            : "chat";
-        return new SockJS(server);
+        return new SockJS("http://3.35.171.53:8080/chat");
       },
       debug: (str) => console.log(str),
       onConnect: () => {
