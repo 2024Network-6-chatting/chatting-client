@@ -106,7 +106,7 @@ function App() {
       <div style={{ flex: 1, overflowY: "auto", padding: "20px" }}>
         {/* 메시지 목록 표시 */}
         {messages.map((msg) => (
-          <ChatBubble key={msg.id} text={msg.content} isSender={msg.isSender} />
+          <ChatBubble key={msg.id} text={msg.content} isSender={msg.isSender} isEmergency={msg.isEmergency}/>
         ))}
         <div ref={messageEndRef} /> {/* 스크롤 하단 */}
       </div>
