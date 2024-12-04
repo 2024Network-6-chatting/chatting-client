@@ -60,7 +60,7 @@ function App() {
         const server =
           window.location.hostname === "localhost"
             ? "http://3.35.171.53:8080/chat"
-            : "api";
+            : "https://cute-yeot-5459dc.netlify.app/chat";
         return new SockJS(server);
       },
       debug: (str) => console.log(str),
